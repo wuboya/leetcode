@@ -1,5 +1,10 @@
-# add by Myth5
-/leetcode-vs/
+# add by Myth5 to exclude the visual studio files
+.vs/
+Debug/
+Release/
+leetcode-vs.*
+*.vcxproj
+*.vcxproj.filters
 
 # Compiled Object files
 *.slo
