@@ -44,7 +44,5 @@ int main()
 	TreeNode *root = new TreeNode(0, left, right);
 	cout << s.sumNumbers(root) << endl;
 
-	system("pause");
-
 	return 0;
 }
