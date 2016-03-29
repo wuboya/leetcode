@@ -23,7 +23,7 @@ public:
 		return DFS(root, 0, 0);
 	}
 private:
-	int DFS(TreeNode* root, int num, int sum) {
+	/*int DFS(TreeNode* root, int num, int sum) {
 		num = num * 10 + root->val;
 		if (!root->left && !root->right) {
 			return num;
@@ -31,7 +31,17 @@ private:
 		if (root->left) sum += DFS(root->left, num, sum);
 		if (root->right) sum += DFS(root->right, num, sum);
 		return sum;
-	}
+	}*/
+    int DFS(TreeNode* root, int num) {
+        num = num * 10 + root -> val;
+        if (!root -> left && !root -> right) {
+            return num;
+        }
+        int sum = 0;
+        if (root -> left) sum += DFS(root -> left, num);
+        if (root -> right) sum += DFS(root -> right, num);
+        return sum;
+    }
 };
 
 int main()
