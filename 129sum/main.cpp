@@ -28,7 +28,7 @@ private:
 		if (!root->left && !root->right) {
 			return num;
 		}
-		if (root->left) sum += DFS(root->left, num, sum);
+		if (root->left) sum += DFS(root->left, num, sum);// 调用的函数return了sum，又加在了原来的sum上
 		if (root->right) sum += DFS(root->right, num, sum);
 		return sum;
 	}*/
