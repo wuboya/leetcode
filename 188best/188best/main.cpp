@@ -24,10 +24,10 @@ public:
         
         for (int s = 1; s <= k; ++ s) {
             int maxPre = INT_MIN;
-            for (int i = 1; i < n; ++ i) {// 如果f表示至多k次交易那么不应限制i的起始位置
-                int temp = (i >= 2 ? f[s - 1][i - 2] : 0) - prices[i - 1];// 注意越界
-                f[s][i] = max(f[s][i - 1], prices[i] + max(maxPre, temp));
-                maxPre = max(maxPre, temp);
+            int maxTemp = -1 * prices[0];
+            for (int i = 1; i < n; ++ i) {
+                f[s][i] = max(f[s][i - 1], prices[i] + maxTemp);
+                maxTemp = max(maxTemp, f[s - 1][i - 1] - prices[i]);
             }
         }
         
