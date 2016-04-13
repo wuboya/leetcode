@@ -17,38 +17,17 @@ public:
             return 0;
         
         int rowNum = obstacleGrid.size(), colNum = obstacleGrid[0].size();
-        vector<vector<int>> f(rowNum, vector<int>(colNum, 0));// f(i,j)表示到达(i,j)的路径数量
+        vector<vector<int>> f(rowNum + 1, vector<int>(colNum + 1, 0));// f(i + 1, j + 1)表示到达(i, j)的路径数量
+        f[0][1] = 1;// 将f扩大一行一列，并将新的f的第一行第二个元素置为1，这样不用特殊初始化计算边界（第一行和第一列）的f，6ms to 4ms
         
-        for (int j = 0; j < colNum; ++ j) {
-            if (obstacleGrid[0][j] == 0) {
-                f[0][j] = 1;
-            } else {
-                for (int k = j; k < colNum; ++ k)
-                    f[0][k] = 0;
-                break;
-            }
-        }
-        
-        for (int i = 0; i < rowNum; ++ i) {
-            if (obstacleGrid[i][0] == 0) {
-                f[i][0] = 1;
-            } else {
-                for (int k = i; k < rowNum; ++ k)
-                    f[k][0] = 0;
-                break;
-            }
-        }
-        
-        for (int i = 1; i < rowNum; ++ i) {
-            for (int j = 1; j < colNum; ++ j) {
-                if (obstacleGrid[i][j] == 0)
+        for (int i = 1; i <= rowNum; ++ i) {
+            for (int j = 1; j <= colNum; ++ j) {
+                if (obstacleGrid[i - 1][j - 1] == 0)// 注意f(i + 1, j + 1)记录的是(i, j)的情况
                     f[i][j] = f[i - 1][j] + f[i][j - 1];
-                else
-                    f[i][j] = 0;
             }
         }
         
-        return f[rowNum - 1][colNum - 1];
+        return f[rowNum][colNum];
     }
 };
 
