@@ -17,45 +17,28 @@ public:
         if (matrix.empty() || matrix[0].empty())
             return 0;
         
-        int m = matrix.size(), n = matrix[0].size();
+        int m = matrix.size(), n = matrix[0].size(), LIP = 1;
         vector<vector<int>> f(m, vector<int>(n, -1));// f(i, j)表示包含matrix[i][j]的LIP长度
         for (int i = 0; i < m; ++ i) {
             for (int j = 0; j < n; ++ j) {
-                if (f[i][j] == -1) {
-                    f[i][j] = 1;
-                    DFS(matrix, f, m, n, i, j);
-                }
+                int length = DFS(matrix, f, m, n, i, j, INT_MIN);
+                LIP = max(LIP, length);
             }
         }
-        
-        int LIP = 1;
-        for (int i = 0; i < m; ++ i) {
-            for (int j = 0; j < n; ++ j) {
-                LIP = max (LIP, f[i][j]);
-            }
-        }
-        
+    
         return LIP;
     }
 private:
-    void DFS(vector<vector<int>>& matrix, vector<vector<int>>& f, int m, int n, int x, int y) {
-        int temp = f[x][y] + 1;
-        if (y + 1 < n && matrix[x][y + 1] > matrix[x][y] && f[x][y + 1] < temp) {
-            f[x][y + 1] = temp;
-            DFS(matrix, f, m, n, x, y + 1);
-        }
-        if (x + 1 < m && matrix[x + 1][y] > matrix[x][y] && f[x + 1][y] < temp) {
-            f[x + 1][y] = temp;
-            DFS(matrix, f, m, n, x + 1, y);
-        }
-        if (y - 1 >= 0 && matrix[x][y - 1] > matrix[x][y] && f[x][y - 1] < temp) {
-            f[x][y - 1] = temp;
-            DFS(matrix, f, m, n, x, y - 1);
-        }
-        if (x - 1 >= 0 && matrix[x - 1][y] > matrix[x][y] && f[x - 1][y] < temp) {
-            f[x - 1][y] = temp;
-            DFS(matrix, f, m, n, x - 1, y);
-        }
+    int DFS(vector<vector<int>>& matrix, vector<vector<int>>& f, int m, int n, int x, int y, int pre) {
+        // 将原本的先检查边界再DFS修改为先DFS再检查边界
+        if (x < 0 || y < 0 || x >= m || y >= n || matrix[x][y] <= pre)
+            return 0;
+        // 如果之前已经计算过，那么直接返回
+        if (f[x][y] != -1)
+            return f[x][y];
+        
+        f[x][y] = max(DFS(matrix, f, m, n, x, y + 1, matrix[x][y]), max(DFS(matrix, f, m, n, x + 1, y, matrix[x][y]), max(DFS(matrix, f, m, n, x, y - 1, matrix[x][y]),DFS(matrix, f, m, n, x - 1, y, matrix[x][y])))) + 1;
+        return f[x][y];
     }
 };
 
