@@ -18,13 +18,10 @@ public:
         int l = 0, r = len - 1;
         while (l < r) {
             int mid = (l + r + 1) / 2;
-            //printf("%d %d %d\n", l, mid, r);
-            if (mid == r) {
-                return nums[l] > nums[r] ? l : r;
-            } else if (mid + 1 <= r && nums[mid] < nums[mid + 1]) {
-                l = mid + 1;
-            } else if (mid + 1 <= r && nums[mid] > nums[mid + 1]) {
-                r = mid;
+            if (nums[mid - 1] < nums[mid]) {
+                l = mid;
+            } else {
+                r = mid - 1;
             }
         }
         return l;
