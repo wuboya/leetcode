@@ -20,10 +20,7 @@ public:
         maxProduct[3] = 2;
         for (int i = 4; i <= n; ++ i) {
             for (int j = 2; j <= i / 2; ++ j) {
-                int a = maxProduct[j] < j ? j : maxProduct[j];
-                int b = maxProduct[i - j] < i - j ? i - j : maxProduct[i - j];
-                maxProduct[i] = max(maxProduct[i], a * b);
-                //printf("%d %d %d %d\n", i, j, a, b);
+                maxProduct[i] = max(maxProduct[i], max(j, maxProduct[j]) * max(i - j, maxProduct[i - j]));
             }
         }
         return maxProduct[n];
