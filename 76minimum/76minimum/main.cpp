@@ -56,11 +56,13 @@ public:
         int left = 0, right = 0;// 左闭右开
         while (right < s.size()) {
             while (vocS != vocT && right < s.size()) {// right < s.size()：t的字符在s中找不全，right会一直往右
+                // add ->
                 char x = s[right];
                 countS[x]++;
                 if (countS[x] == countT[x]) {
                     vocS++;
                 }
+                // <- add
                 ++right;
             }
             while (vocS == vocT && left < right) {// left < right：如果t是空字符串，satisfy会一直为true
@@ -68,11 +70,13 @@ public:
                     windowLen = right - left;
                     head = left;
                 }
+                // remove ->
                 char x = s[left];
                 if (countS[x] == countT[x]) {
                     vocS--;
                 }
                 countS[x]--;
+                // <- remove
                 ++left;
             }
         }
