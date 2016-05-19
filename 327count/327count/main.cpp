@@ -20,32 +20,37 @@ public:
             return 0;
         
         int len = nums.size();
-        vector<long long> sums(len + 1, 0);// sums[i]表示0...i-1的前缀和，i >= 1
+        vector<long> sums(len + 1, 0);// sums[i]表示0...i-1的前缀和，i >= 1, sums[j] - sums[i]表示[i,j)的和
         for (int i = 0; i < len; ++i) {
             sums[i + 1] = sums[i] + nums[i];
         }
         return countMergeSort(sums, 0, len + 1, lower, upper);
     }
     
-    int countMergeSort(vector<long long> &sums, int left, int right, int lower, int upper) {
+    int countMergeSort(vector<long> &sums, int left, int right, int lower, int upper) {
         if (right - left <= 1) {// [left, right)
             return 0;
         }
         int mid = (left + right) / 2;
         int count = countMergeSort(sums, left, mid, lower, upper) + countMergeSort(sums, mid, right, lower, upper);
         
-        int j = mid, k = mid, t = mid;
-        vector<long long> cache(right - left, 0);
-        for (int i = left, r = 0; i < mid; ++i, ++ r) {// k, j在右半部分，i在左半部分
-            while (k < right && sums[k] - sums[i] < lower) k++;// 对每一个i，找到k，j，使得sums[j] - sums[i] > upper
-            while (j < right && sums[j] - sums[i] <= upper) j ++;
+        int j = mid, k = mid, t = mid, len = 0;
+        vector<long> cache(right - left, 0);
+        for (int i = left, r = 0; i < mid; ++i, ++r) {// k, j在右半部分，i在左半部分
+            while (k < right && sums[k] - sums[i] < lower) k++;// 对每一个i，找到第一个k，使得sums[k] - sums[i] >= lower
+            while (j < right && sums[j] - sums[i] <= upper) j ++;// 对每一个i，找到第一个j，使得sums[j] - sums[i] > upper
+            count += j - k;
             while (t < right && sums[t] < sums[i]) {
                 cache[r] = sums[t];
                 r++;
                 t++;
             }
             cache[r] = sums[i];
-            count += j - k;
+            len = r;
+        }
+        
+        for (int i = 0; i <= len; ++i) {
+            sums[left + i] = cache[i];
         }
         
         return count;
